@@ -262,7 +262,7 @@
                 <option value="">BURGER ORÉGANO Y AJO GRANDE RAZA</option>
             </select>
             <label for="number__products">Cantidad:</label>
-            <input type="number" id="number__products">
+            <input type="number" id="number__products" min="6" max="2000">
         </div>
         
         <button id="add_item"">Agregar</button>
@@ -273,11 +273,11 @@
             </div>
             
             <ul>
-                <li>
+                <!--<li>
                     <h3>BURGER QUESO GRANDE RAZA</h3>
                     <div class="container__number">
                         <label for="number">Cantidad:</label>
-                        <input type="number" id="number">
+                        <input type="number" id="number" min="6" max="2000">
                     </div>
                     <i class="fa-solid fa-trash delete__item"></i>
                 </li>
@@ -285,7 +285,7 @@
                     <h3>BURGER CHICHARRÓN GRANDE RAZA</h3>
                     <div class="container__number">
                         <label for="number">Cantidad:</label>
-                        <input type="number" id="number">
+                        <input type="number" id="number" min="6" max="2000">
                     </div>
                     <i class="fa-solid fa-trash delete__item"></i>
                 </li>
@@ -293,10 +293,10 @@
                     <h3>BURGER ORÉGANO Y AJO GRANDE RAZA</h3>
                     <div class="container__number">
                         <label for="number">Cantidad:</label>
-                        <input type="number" id="number">
+                        <input type="number" id="number" min="6" max="2000">
                     </div>
                     <i class="fa-solid fa-trash delete__item"></i>
-                </li>
+                </li>-->
                 <!--<script>
                     
                     const lista=document.querySelector(".lista__productos");
@@ -334,10 +334,11 @@
     document.getElementById("add_item").addEventListener("click",add__element, true);
     function add__element(){
         event.preventDefault();
-        var lista=document.querySelector(".lista__productos").querySelector("ul");
-        var element=document.createElement("li");
-        element.textContent=document.getElementById("products").options[document.getElementById("products").selectedIndex].text;
-        lista.appendChild(element);
+        var list=document.querySelector("#lista__productos").querySelector("ul");
+        var name=document.getElementById("products").options[document.getElementById("products").selectedIndex].text;
+        var number=document.querySelector("#number__products").value;
+        list.innerHTML+="<li><h3>"+name+"</h3><div class='container__number'><label for='number'>Cantidad:</label><input type='number' id='number' min='6' max='2000' value='"+number+"'></div><i class='fa-solid fa-trash delete__item'></i></li>";
+        
     }
 </script>
 </html>
