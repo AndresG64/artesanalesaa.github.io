@@ -179,6 +179,7 @@
         }
         #lista__productos ul li input{
             width: auto;
+            height: 25px;
         } 
         .delete__item{
             transition: all 0.2s ease 0s;
@@ -247,11 +248,11 @@
     <form class="formulario">
         <div class="formulario__grupo">
             <label for="nombre" class="form__label">Nombre a quién se factura: </label>
-            <input type="text" id="nombre" class="form__input" placeholder=" ">
+            <input type="text" id="nombre" class="form__input" placeholder="Pepito">
         </div>
         <div id="formulario__document">
             <label for="cc">CC</label>
-            <input type="radio" id="cc" name="document" placeholder="Documento">
+            <input type="radio" id="cc" name="document">
             <label for="nit">NIT</label>
             <input type="radio" id="nit" name="document">
             <label for="pep">PEP</label>
@@ -259,11 +260,11 @@
         </div>
         <div class="formulario__grupo">
             <label for="document" class="form__label">Documento de Identidad: </label>
-            <input type="text" id="document" class="form__input" placeholder=" ">
+            <input type="text" id="document" class="form__input" placeholder="10432...">
         </div>
         <div class="formulario__grupo">
             <label for="tell" class="form__label">Número telefonico: </label>
-            <input type="text" id="tell" class="form__input" placeholder=" ">
+            <input type="text" id="tell" class="form__input" placeholder="315460...">
         </div>
         <h3 id="select__product">Escoge tu producto</h3>
         <div id="conteiner__products">
@@ -309,17 +310,7 @@
                     </div>
                     <i class="fa-solid fa-trash delete__item"></i>
                 </li>-->
-                <!--<script>
-                    
-                    const lista=document.querySelector(".lista__productos");
-                    const element=document.createElement("li");
-                    element.textContent="Burger queso raza";
-                    lista.appendChild(element);
-                    var message="Hola, bgiobbovbogvbo"
-                    var number="573154600584"
-                    var url = "https://api.whatsapp.com/send?phone="+encodeURIComponent(number)+"&text="+encodeURIComponent(message)
-                    window.open(url)
-                </script>-->
+                
             </ul>
         </div>
         <div class="formulario__grupo">
@@ -338,19 +329,69 @@
             <div id="whatsapp">
                 <a href="https://www.instagram.com/artesanales_aa/"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
-        </div>
-        
+        </div> 
     </footer>
 </body>
 <script>
+    const ul=document.getElementById("lista__productos").querySelector("ul");
     document.getElementById("add_item").addEventListener("click",add__element, true);
+
     function add__element(){
         event.preventDefault();
-        var list=document.querySelector("#lista__productos").querySelector("ul");
         var name=document.getElementById("products").options[document.getElementById("products").selectedIndex].text;
-        var number=document.querySelector("#number__products").value;
-        list.innerHTML+="<li><h3>"+name+"</h3><div class='container__number'><label for='number'>Cantidad:</label><input type='number' id='number' value='"+number+"' min='6' max='2000'></div><i class='fa-solid fa-trash delete__item'></i></li>";
+        if(checkProduct(name)){
+            var number=document.querySelector("#number__products").value;
+            number=countNumber(number,6)
+            var li=document.createElement("li");
+            var h3=document.createElement("h3");
+            var i=document.createElement("i");
+            i.classList.add("fa-solid");
+            i.classList.add("fa-trash");
+            i.classList.add("delete__item");
+            h3.textContent=name;
+            console.log(name);
+            li.appendChild(h3);
+            li.innerHTML+="<div class='container__number'><label for='number'>Cantidad:</label><input type='number' id='number' min='6' max='2000' value="+number+"></div>";
+            li.appendChild(i);
+            ul.appendChild(li);
+            i.addEventListener('click', (e)=>{
+                const item=e.target.parentElement;
+                ul.removeChild(item);
+            })
+        }
         
     }
+    /*Esta función recibe el nombre del producto y devuelve false en caso que ya se encuentre en el carrito
+    en caso contrario true*/
+    function checkProduct(name){
+        liList=ul.querySelectorAll("li");
+        for(i=0;i<liList.length;i++){
+            if(liList[i].querySelector("h3").textContent==name){
+                return false;
+            }
+        }
+        return true;
+    }
+    /*Esta función recibe como parametro el numero y el modulo que se quiere para mantener los paquetes con sus unidades respectivas
+    luego devuelve el número transformado multiplo de las unidades por paquete*/
+    function countNumber(number,modulo){
+        if (number==""){number=0;}
+        number=parseInt(number);
+        if(number%modulo!=0 || number==0){
+            number=number-number%modulo+6;
+        }
+        return number;
+    }
+
+    /*
+    const lista=document.querySelector(".lista__productos");
+    const element=document.createElement("li");
+    element.textContent="Burger queso raza";
+    lista.appendChild(element);
+    var message="Hola, bgiobbovbogvbo"
+    var number="573154600584"
+    var url = "https://api.whatsapp.com/send?phone="+encodeURIComponent(number)+"&text="+encodeURIComponent(message)
+    window.open(url)
+    */
 </script>
 </html>
