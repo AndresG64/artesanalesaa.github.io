@@ -222,6 +222,15 @@
             color: #2ab200;
             font-weight: bold;
         }
+        #warning__menssage{
+            width: 100%;
+            display: none;
+        }
+        #warning__menssage p{
+            font-size: 12px;
+            color: #2ab200;
+            text-align: center;
+        }
         footer{
             background-color: rgba(250, 235, 215, 0.342);
             text-align: center;
@@ -336,6 +345,9 @@
         </div>
 
         <button id="formulario__confirm"><span>Enviar pedido a Whatsapp</span><i class="fa-solid fa-check"></i></button>
+        <div id="warning__menssage">
+            <p></p>
+        </div>
     </form>
     <footer>
         <h3>Nuestras redes</h3>
@@ -377,6 +389,9 @@
                 ul.removeChild(item);
             })
         }
+        else{
+
+        }
         
     }
     /*Esta función recibe el nombre del producto y devuelve false en caso que ya se encuentre en el carrito
@@ -410,6 +425,7 @@
         var tell=document.querySelector("#tell").value;
         var direction=document.querySelector("#direction").value;
         if(name!= "" && typeDoc!="" && doc!="" && tell!="" && direction!="" && liList.length!=0){
+            warningMessage(true);
             var order="";
             for(i=0;i<liList.length;i++){
                 order+='🟢 '+liList[i].querySelector(".container__number").querySelector("input").value+' - '+liList[i].querySelector("h3").textContent+'\n';
@@ -422,7 +438,7 @@
             var url = "https://api.whatsapp.com/send?phone="+encodeURIComponent(number)+"&text="+encodeURIComponent(message)
             window.open(url)
         }
-        else{console.log("Faltan datos")}
+        else{warningMessage(false)}
     }
     function getRadio(radioList){
         for(i=0;i<radioList.length;i++){
@@ -431,6 +447,19 @@
             }
         }
         return "";
+    }
+    function warningMessage(ban){
+        var message=document.querySelector("#warning__menssage").querySelector("p");
+        const divMessage=message.parentElement;
+        divMessage.style.display="block";
+        if(ban){
+            message.style.color="#2ab200";
+            message.textContent="¡Gracias! recuerda confirmar tu pedido por Whatsapp";
+        }
+        else{
+            message.style.color="red";
+            message.textContent="Ingresa todos los datos *";
+        }
     }
     /*
     const lista=document.querySelector(".lista__productos");
