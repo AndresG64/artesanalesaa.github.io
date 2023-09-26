@@ -400,20 +400,25 @@
         event.preventDefault();
         radioList=document.querySelector("#formulario__document").querySelectorAll("input");
         var liList=ul.querySelectorAll("li");
-        var order="";
-        for(i=0;i<liList.length;i++){
-            order+='🟢 '+liList[i].querySelector(".container__number").querySelector("input").value+' - '+liList[i].querySelector("h3").textContent+'\n';
-        }
         var name=document.querySelector("#name").value;
         var typeDoc=getRadio(radioList).toUpperCase();
         var doc=document.querySelector("#document").value;
         var tell=document.querySelector("#tell").value;
         var direction=document.querySelector("#direction").value;
-        var message='¡Hola, quisiera hacer un pedido!\nNombre: '+name+'\nDocumento: '+typeDoc+' '+doc
-        +'\nTelefono: '+tell+'\n';
-        message+=order;
-        message+='Dirección: '+direction;
-        console.log(message);
+        if(name!= "" && typeDoc!="" && doc!="" && tell!="" && direction!="" && liList.length!=0){
+            var order="";
+            for(i=0;i<liList.length;i++){
+                order+='🟢 '+liList[i].querySelector(".container__number").querySelector("input").value+' - '+liList[i].querySelector("h3").textContent+'\n';
+            }
+            var message='¡Hola Artesanales AA, quisiera hacer un pedido!\n\n👤Nombre: '+name+'\n#️⃣Documento: '+typeDoc+' '+doc
+            +'\n📞Telefono: '+tell+'\n\n';
+            message+=order;
+            message+='\n📍Dirección: '+direction;
+            var number="573154600584"
+            var url = "https://api.whatsapp.com/send?phone="+encodeURIComponent(number)+"&text="+encodeURIComponent(message)
+            window.open(url)
+        }
+        else{console.log("Faltan datos")}
     }
     function getRadio(radioList){
         for(i=0;i<radioList.length;i++){
