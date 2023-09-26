@@ -58,6 +58,13 @@
             border-radius: 3px;
             transition: all 0.3s ease 0s;
         }
+        .formulario__grupo label::after{
+            content: '*';
+            margin-left: 3px;
+            color: red;
+            font-weight: bold;
+        }
+        
         .formulario__grupo:hover{
             background-color: #dfdfdfb2;
         }
@@ -81,6 +88,12 @@
         }
         #formulario__document label{
             cursor: pointer;
+        }
+        #formulario__document::after{
+            content: "*";
+            margin-left: 3px;
+            color: red;
+            font-weight: bold;
         }
         #select__product{
             justify-self: center;
@@ -248,7 +261,7 @@
     <form class="formulario">
         <div class="formulario__grupo">
             <label for="nombre" class="form__label">Nombre a quién se factura: </label>
-            <input type="text" id="nombre" class="form__input" placeholder="Pepito">
+            <input type="text" id="name" class="form__input" placeholder="Pepito">
         </div>
         <div id="formulario__document">
             <label for="cc">CC</label>
@@ -315,7 +328,7 @@
         </div>
         <div class="formulario__grupo">
             <label for="Direction" class="form__label">Ingrese la dirección: </label>
-            <input type="text" id="Direction" class="form__input" placeholder=" ">
+            <input type="text" id="direction" class="form__input" placeholder="Carrera 80 #19a-25">
         </div>
 
         <button id="formulario__confirm"><span>Enviar pedido a Whatsapp</span><i class="fa-solid fa-check"></i></button>
@@ -335,6 +348,7 @@
 <script>
     const ul=document.getElementById("lista__productos").querySelector("ul");
     document.getElementById("add_item").addEventListener("click",add__element, true);
+    document.querySelector("#formulario__confirm").addEventListener('click', sendMessage, true);
 
     function add__element(){
         event.preventDefault();
@@ -364,7 +378,7 @@
     /*Esta función recibe el nombre del producto y devuelve false en caso que ya se encuentre en el carrito
     en caso contrario true*/
     function checkProduct(name){
-        liList=ul.querySelectorAll("li");
+        var liList=ul.querySelectorAll("li");
         for(i=0;i<liList.length;i++){
             if(liList[i].querySelector("h3").textContent==name){
                 return false;
@@ -382,7 +396,33 @@
         }
         return number;
     }
-
+    function sendMessage(){
+        event.preventDefault();
+        radioList=document.querySelector("#formulario__document").querySelectorAll("input");
+        var liList=ul.querySelectorAll("li");
+        var order="";
+        for(i=0;i<liList.length;i++){
+            order+='🟢 '+liList[i].querySelector(".container__number").querySelector("input").value+' - '+liList[i].querySelector("h3").textContent+'\n';
+        }
+        var name=document.querySelector("#name").value;
+        var typeDoc=getRadio(radioList).toUpperCase();
+        var doc=document.querySelector("#document").value;
+        var tell=document.querySelector("#tell").value;
+        var direction=document.querySelector("#direction").value;
+        var message='¡Hola, quisiera hacer un pedido!\nNombre: '+name+'\nDocumento: '+typeDoc+' '+doc
+        +'\nTelefono: '+tell+'\n';
+        message+=order;
+        message+='Dirección: '+direction;
+        console.log(message);
+    }
+    function getRadio(radioList){
+        for(i=0;i<radioList.length;i++){
+            if(radioList[i].checked){
+                return radioList[i].id;
+            }
+        }
+        return "";
+    }
     /*
     const lista=document.querySelector(".lista__productos");
     const element=document.createElement("li");
