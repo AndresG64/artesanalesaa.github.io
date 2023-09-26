@@ -301,7 +301,7 @@
                 <option value="">BURGER ORÉGANO Y AJO GRANDE RAZA</option>
             </select>
             <label for="number__products">Cantidad:</label>
-            <input type="number" id="number__products" min="6" max="2000" step="6">
+            <input type="number" id="number__products" min="6" max="2000" step="6" maximum-scale="1">
         </div>
         
         <button id="add_item"">Agregar</button>
@@ -381,7 +381,7 @@
             h3.textContent=name;
             console.log(name);
             li.appendChild(h3);
-            li.innerHTML+="<div class='container__number'><label for='number'>Cantidad:</label><input type='number' id='number' min='6' max='2000' step='6' value="+number+"></div>";
+            li.innerHTML+="<div class='container__number'><label for='number'>Cantidad:</label><input type='number' id='number' min='6' max='2000' step='6' maximum-scale='1' value="+number+"></div>";
             li.appendChild(i);
             ul.appendChild(li);
             i.addEventListener('click', (e)=>{
@@ -449,7 +449,7 @@
         return "";
     }
     function warningMessage(ban){
-        var message=document.querySelector("#warning__menssage").querySelector("p");
+        const message=document.querySelector("#warning__menssage").querySelector("p");
         const divMessage=message.parentElement;
         divMessage.style.display="block";
         if(ban){
