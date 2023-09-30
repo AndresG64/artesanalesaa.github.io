@@ -96,6 +96,58 @@
             color: red;
             font-weight: bold;
         }
+        #cnt-moldes{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 20px;
+            gap: 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(128, 128, 128, 1);
+        }
+        .types-moldes h3{
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .cnt-img{
+            display: flex;
+            gap: 10px;
+        }
+        #cnt-moldes img{
+            width: 50px;
+            border-bottom: 1px solid #d9d9d9;
+            transition: all 0.3s ease 0s;
+        }
+        
+        #cnt-moldes img:hover{
+            scale: 1.2;
+        }
+        .moldes{
+            position: relative;
+            cursor: pointer;
+            width: 80px;
+            text-align: center;
+            border: 1px solid #d9d9d9;
+            border-radius: 10px;
+            padding: 5px;
+            transition: all 0.3s ease 0s;
+        }
+        .moldes .check{
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            display: none;
+        }
+        .moldes:hover{
+            scale: 1.1;
+            border: 1px solid #2ab200;
+        }
+        .moldes p{
+            font-size: 10px;
+            width: 100%;
+            user-select: none;
+        }
         #select__product{
             justify-self: center;
             align-self: center;
@@ -340,6 +392,39 @@
             <label for="tell" class="form__label">Número telefonico: </label>
             <input type="text" id="tell" class="form__input" placeholder="315460...">
         </div>
+        <div id="cnt-moldes">
+            <div class="types-moldes">
+                <h3>BURGERS</h3>
+                <div class="cnt-img">
+                    <div class="moldes">
+                        <img src="src/moldeRaza.png" alt="">
+                        <p>Molde Raza 11cm diametro</p>
+                        <i class="fa-regular fa-circle-check check" style="color: #2ab200;"></i>
+                    </div>
+                    <div class="moldes">
+                        <img src="src/mooldeMoos.png" alt="">
+                        <p>Molde Moos 12cm diametro</p>
+                        <i class="fa-regular fa-circle-check check" style="color: #2ab200;"></i>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="types-moldes">
+                <h3>PERROS</h3>
+                <div class="cnt-img">
+                    <div class="moldes">
+                        <img src="src/perro grande.png" alt="">
+                        <p>Molde Raza 11cm diametro</p>
+                        <i class="fa-regular fa-circle-check check" style="color: #2ab200;"></i>                    </div>
+                    <div class="moldes">
+                        <img src="src/mooldeMoos.png" alt="">
+                        <p>Molde Moos 12cm diametro</p>
+                        <i class="fa-regular fa-circle-check check" style="color: #2ab200;"></i>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
         <h3 id="select__product">Escoge tu producto</h3>
         <div id="conteiner__products">
             <div id="cnt-search">
@@ -555,7 +640,17 @@
         }
         amount.value="";
     })
-
+    var listFilter=document.querySelectorAll(".moldes")
+    for(i=0;i<listFilter.length;i++){
+        listFilter[i].addEventListener("click", (e)=>{
+            if(e.currentTarget.querySelector(".check").style.display=="none"){
+                e.currentTarget.querySelector(".check").style.display="block";
+                ulSearch.style.display="none";
+            }
+            else{e.currentTarget.querySelector(".check").style.display="none";ulSearch.style.display="none";}
+            
+        })
+    }
     
     function addlist(){
         /*var archivoTxt=new XMLHttpRequest();
