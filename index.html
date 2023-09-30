@@ -102,6 +102,8 @@
             
         }
         #conteiner__products{
+            position: relative;
+            z-index: 7;
             width: 100%;
             display: flex;
             gap: 5px;
@@ -123,14 +125,28 @@
             padding: 5px;
             border: 1px solid #d9d9d9;
             cursor: pointer;
+            z-index: 6;
         }
-        #products{
-            border: 1px solid #d9d9d9;
+        #cnt-search{
+            
             height: 40px;
             border-radius: 5px;
-            font-size: 17px;
+            min-width: 160px;
             width: 150%;
             cursor: pointer;
+            z-index: 6;
+        }
+        #cnt-search input{
+            border: 1px solid #d9d9d9;
+            width: 100%;
+            height: 100%;
+            font-size: 17px;
+        }
+        #back-search{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 4;
         }
         #add_item{
             cursor: pointer;
@@ -262,6 +278,37 @@
             transform: translate(2px,-2px);
             transition: 0.2s;
         }
+
+        #cnt-search{
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+         }
+         #cnt-search input{
+            width: 100%;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid gray;;
+         }
+         #slide-search{
+            position: absolute;
+            width: auto;
+            height: 180px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            border-radius: 10px;
+            width: 100%;
+            border: 1px solid #d9d9d9;
+            background-color: white;
+            display: none;
+            z-index: 8;
+         }
+         #slide-search li{
+            border: 1px solid #d9d9d9;
+            width: 100%;
+            padding: 5px;
+            
+         }
     </style>
 </head>
 <body>
@@ -294,12 +341,13 @@
         </div>
         <h3 id="select__product">Escoge tu producto</h3>
         <div id="conteiner__products">
-            <select id="products">
-                <option value="">BURGER QUESO GRANDE RAZA</option>
-                <option value="">BURGER PRETZEL GRANDE RAZA</option>
-                <option value="">BURGER CHICHARRÓN GRANDE RAZA</option>
-                <option value="">BURGER ORÉGANO Y AJO GRANDE RAZA</option>
-            </select>
+            <div id="cnt-search">
+                <input id="search" type="text" placeholder="Ingresa el producto">
+                <ul id="slide-search">
+                    
+                </ul>
+            </div>
+            <div id="back-search"></div>
             <label for="number__products">Cantidad:</label>
             <input type="number" id="number__products" min="6" max="2000" step="6" maximum-scale="1">
         </div>
@@ -365,10 +413,14 @@
     const ul=document.getElementById("lista__productos").querySelector("ul");
     document.getElementById("add_item").addEventListener("click",add__element, true);
     document.querySelector("#formulario__confirm").addEventListener('click', sendMessage, true);
-
+    var amount=document.querySelector("#number__products");
+    var backSearch=document.querySelector("#back-search");
+    var typeSearch=document.querySelector("#search");
+    var ulSearch=document.querySelector("#slide-search");
+    var body=document.querySelector("body");
     function add__element(){
         event.preventDefault();
-        var name=document.getElementById("products").options[document.getElementById("products").selectedIndex].text;
+        var name=typeSearch.value;
         if(checkProduct(name)){
             var number=document.querySelector("#number__products").value;
             number=countNumber(number,6)
@@ -470,6 +522,82 @@
     var number="573154600584"
     var url = "https://api.whatsapp.com/send?phone="+encodeURIComponent(number)+"&text="+encodeURIComponent(message)
     window.open(url)
-    */
+    */ 
+    //codigo java para la busqueda
+    
+    addlist();
+    amount.addEventListener("click",(e)=>{
+        ulSearch.style.display="none";
+    })
+    backSearch.addEventListener("click",(e)=>{
+        ulSearch.style.display="none";
+    })
+    typeSearch.addEventListener("keyup", (e)=>{
+        ulSearch.style.display="block";
+        if(typeSearch.value.length==0){ulSearch.style.display="none";}
+        updateListSearch();
+    }, true)
+    typeSearch.addEventListener("click", (e)=>{
+        lista=ulSearch.querySelectorAll("li");
+        ulSearch.style.height="180px";
+        ulSearch.style.display="block";
+        for(i=0;i<lista.length;i++){
+            liElement=lista[i];
+            liElement.style.display="block";
+        }
+    })
+
+    function addlist(){
+        var archivoTxt=new XMLHttpRequest();
+        const fileRuta='productos.txt'
+        archivoTxt.open("GET", fileRuta, false);
+        archivoTxt.send(null);
+        var txt=archivoTxt.responseText;
+        txt=txt.split('\r\n');
+        txt.pop();
+        console.log(txt);
+        for(i=0;i<txt.length;i++){
+            var li=document.createElement("li");
+            li.classList.add("element");
+            var p=document.createElement("p");
+            p.textContent=txt[i];
+            li.appendChild(p);
+            ulSearch.appendChild(li);
+            p.addEventListener("mouseover", (e)=>{
+                item=e.target.parentElement;
+                typeSearch.placeholder=item.querySelector("p").textContent;
+            })
+            p.addEventListener("click", (e)=>{
+                item=e.target.parentElement;
+                typeSearch.value=item.querySelector("p").textContent;
+                ulSearch.style.display="none";
+                amount.focus();
+            })
+        }
+    }
+    function updateListSearch(){
+        text=typeSearch.value.toUpperCase();
+        lista=ulSearch.querySelectorAll("li");
+        var find=false;
+        for(i=0;i<lista.length;i++){
+            liElement=lista[i];
+            ulSearch.style.height="180px";
+            if(lista[i].className=="no-found"){lista[i].remove()}
+            textVal=lista[i].querySelector("p").textContent.toUpperCase();
+            if(textVal.includes(text)){liElement.style.display="block";find=true;}
+            else{liElement.style.display="none";}
+        }
+        if(find==false){
+            noFound=document.createElement("li");
+            noFound.classList.add("no-found");
+            p=document.createElement("p")
+            p.textContent="No se encuentran coincidencias"
+            p.style.color="red";
+            p=noFound.appendChild(p);
+            console.log(noFound);
+            ulSearch.appendChild(noFound);
+            ulSearch.style.height="38px";
+        }
+    }
 </script>
 </html>
