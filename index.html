@@ -557,7 +557,7 @@
 
     function addlist(){
         var archivoTxt=new XMLHttpRequest();
-        const fileRuta='productos.txt'
+        const fileRuta="src/productos.txt";
         archivoTxt.open("GET", fileRuta, false);
         archivoTxt.send(null);
         var txt=archivoTxt.responseText;
