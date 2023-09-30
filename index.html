@@ -288,7 +288,7 @@
             width: 100%;
             padding: 5px;
             border-radius: 5px;
-            border: 1px solid gray;;
+    
          }
          #slide-search{
             position: absolute;
@@ -408,6 +408,7 @@
             </div>
         </div> 
     </footer>
+    <div id="hora" style="display: none;"></div>
 </body>
 <script>
     const ul=document.getElementById("lista__productos").querySelector("ul");
@@ -482,7 +483,7 @@
             for(i=0;i<liList.length;i++){
                 order+='🟢 '+liList[i].querySelector(".container__number").querySelector("input").value+' - '+liList[i].querySelector("h3").textContent+'\n';
             }
-            var message='¡Hola Artesanales AA, quisiera hacer un pedido!\n\n👤Nombre: '+name+'\n#️⃣Documento: '+typeDoc+' '+doc
+            var message=document.querySelector("#hora").textContent+'\n¡Hola Artesanales AA, quisiera hacer un pedido!\n\n👤Nombre: '+name+'\n#️⃣Documento: '+typeDoc+' '+doc
             +'\n📞Telefono: '+tell+'\n\n';
             message+=order;
             message+='\n📍Dirección: '+direction;
@@ -541,10 +542,12 @@
         lista=ulSearch.querySelectorAll("li");
         ulSearch.style.height="180px";
         ulSearch.style.display="block";
+        typeSearch.value="";
         for(i=0;i<lista.length;i++){
             liElement=lista[i];
             liElement.style.display="block";
         }
+        amount.value="";
     })
 
     function addlist(){
@@ -555,7 +558,6 @@
         var txt=archivoTxt.responseText;
         txt=txt.split('\r\n');
         txt.pop();
-        console.log(txt);
         for(i=0;i<txt.length;i++){
             var li=document.createElement("li");
             li.classList.add("element");
@@ -594,10 +596,23 @@
             p.textContent="No se encuentran coincidencias"
             p.style.color="red";
             p=noFound.appendChild(p);
-            console.log(noFound);
             ulSearch.appendChild(noFound);
             ulSearch.style.height="38px";
         }
+    }
+    getDate();
+    function getDate(){
+        now=new Date();
+        dia=now.getDate().toString();
+        mes=(now.getMonth()+1).toString();
+        year=now.getFullYear().toString();
+        hora=now.getHours().toString();
+        minuto=now.getMinutes().toString();
+        if(parseInt(hora)<10){hora="0"+hora;}
+        if(parseInt(minuto)<10){minuto="0"+minuto;}
+        timeOrder="🕐Pedido realizado el día: "+dia+"/"+mes+"/"+year+" a las "+hora+":"+minuto+".";
+        console.log(timeOrder);
+        document.querySelector("#hora").textContent=timeOrder;
     }
 </script>
 </html>
